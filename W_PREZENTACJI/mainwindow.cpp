@@ -351,26 +351,21 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
+
+    // Folder początkowy do którego trafi użytkownik po kliknięciu
     QString start_folder = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation );
 
-    QString plik = QFileDialog::getOpenFileName( this, tr("Wybierz folder zapisu kopii zapasowej"), start_folder);
 
+    // Okno dialogowe do wyboru pliku z kopią zapasową
+    QString plik = QFileDialog::getOpenFileName( this, tr("Wybierz plik do odczytu kopii zapasowej"), start_folder);
+
+
+    // Otwarcie pustego pliku anuluje działanie funkcji
     if (plik.isEmpty())
         return;
-    qDebug() << "przed";
     auto arg = m_uslugi.deserializuj(plik);
-    qDebug() << "po";
-    for(auto egz: arg){
-        qDebug() << egz.przedmiot;
-        qDebug() << egz.blok;
-        qDebug() << egz.pytanie_1;
-        qDebug() << egz.pytanie_2;
-        qDebug() << egz.pytanie_3;
-        qDebug() << egz.odrzucone_pytanie_1;
-        qDebug() << egz.odrzucone_pytanie_2;
-        qDebug() << "PRZERWA!\n";
-    }
-    // zapis kopii zapasowej
+
+    // otwarcie okna dialogowego z historią egzaminu
     dialog_historia* dialog_hist = new dialog_historia(arg, this);
     dialog_hist->exec();
 }
